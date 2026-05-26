@@ -39,9 +39,9 @@ const habitSchema = new mongoose.Schema(
       enum: ["daily", "weekly"],
       default:"daily"
     },
-    targetdays:{
+    targetDays:{
       type:Number,
-      default:7,
+      /* default:7, */
       min:1,
       max:7
     },

@@ -3,15 +3,19 @@ import HabitLog from "../models/HabitLog.js";
 
 export const getHabits = async (req, res) => {
   try {
+    
+    
     const { includeArchived } = req.query;
     const filter = { userId: req.user._id };
     if (includeArchived !== "true") {
       filter.isArchived = false;
     }
-    const habits = (await Habit.find(filter)).toSorted({
+    
+    const habits = await Habit.find(filter).sort({
       order: 1,
       createdAt: 1,
     });
+
     res.json(habits);
   } catch (err) {
     res.status(500).json({
@@ -20,7 +24,7 @@ export const getHabits = async (req, res) => {
   }
 };
 
-export const createHabit = async (res, res) => {
+export const createHabit = async (req, res) => {
   try {
     const { name, description, category, frequency, targetDays, color, icon } =
       req.body;
@@ -61,7 +65,7 @@ export const updateHabit =  async (req,res)=>{
       });
     }
 
-    const fielsd = [
+    const fields = [
       "name",
       "description",
       "category",
