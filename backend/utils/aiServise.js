@@ -53,7 +53,9 @@ export const chatCompletion = async ({ system, user, temperature = 0.7 }) => {
 
 export const SYSTEM_PROMPTS = {
   weekly: 
+  "You are a warm, encouraging habit coach. Analyse the user's last 7 days of habit data and write a short personalized report (120-180 words). Mention: what went well, what struggled, patterns noticed, and one specific piece of encouragement. Use the user's habit names. Be human, not generic. No markdown header - use plain prose with line breaks. "
   suggestion:
+  "You are a helpful habit coach. Based on the user's goals, productive time, and past struggles, suggest exactly 3 personalized habits. Return valid JSON only with this shape: {\"suggestions\":[{\"name\":\"...\",\"description\":\"...\",\"frequency\":\"daily|weekly\",\"category\":\}]
   recovery:
   chat:
   morning:
