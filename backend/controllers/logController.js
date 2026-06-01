@@ -89,8 +89,8 @@ export const getHeatmap = async (req,res)=>{
       userId:req.user._id,
       completedDate:{ $gte:days[0], $lte: days[days.length - 1]},
     });
-    const counts = {},
-    for (const d of days) counts[d]= 0;
+    const counts = {};
+    for(const d of days) counts[d]= 0;
     for(const l of logs) counts[l.completedDate] = (counts[l.completedDate] || 0) + 1;
     const data = days.map((d)=>({ date:d, count:counts[d] || 0}));
     res.json(data);

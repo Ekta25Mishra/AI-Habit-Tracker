@@ -2,11 +2,11 @@ import Habit from "../models/Habit.js";
 import HabitLog from "../models/HabitLog.js";
 import AIInsight from "../models/AIInsight.js";
 import { chatCompletion, SYSTEM_PROMPTS } from "../utils/aiServise.js";
-import {lastNdays, calcStreak, todayKey} from "../utils/dateHelpers.js"
+import {lastNDays, calcStreak, todayKey} from "../utils/dateHelpers.js"
 
 const buildWeeklyContext = async (userId) =>{
   const habits = await Habit.find({ userId, isArchived:false});
-  const days = lastNdays(7);
+  const days = lastNDays(7);
   const logs = await HabitLog.find({
     userId,
     completedDate:{
@@ -168,7 +168,7 @@ export const chatAnalysis = async(req,res) =>{
       userId: req.user._id,
       isArchived:false,
     });
-    const days = lastNdays(30);
+    const days = lastNDays(30);
     const logs = await HabitLog.find({
       userId:req.user._id,
       completedDate:{ $gte:days[0], $lte: days[days.length - 1]},
@@ -182,7 +182,7 @@ export const chatAnalysis = async(req,res) =>{
         const dow = new Date(l.completedDate).getDay();
         byDow[dow] += 1;
       }
-      return `${h.name} (${h.category}): ${hLogs.length}/30 in last 30 days, by weekday [Sun,Mon,Tue,Wed,Thu,Fri,Sat]=`
+      return `${h.name} (${h.category}): ${hLogs.length}/30 in last 30 days, by weekday [Sun,Mon,Tue,Wed,Thu,Fri,Sat]= ${byDow}`
      /*  something there.... */
     })
     .join("\n");
@@ -216,7 +216,7 @@ export const morningMotivation= async (req,res)=>{
         constent:"Good morning! Add your first habit today and let's get the momentum started.",
       });
     }
-    const days = lastNdays(30);
+    const days = lastNDays(30);
     const logs = await HabitLog.find({
       userId:req.user._id,
       completedDate:{ $gte:days[0], $lte:days[days.length - 1]},
