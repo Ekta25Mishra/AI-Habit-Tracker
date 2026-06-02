@@ -57,3 +57,19 @@ An AI-powered habit tracking application that helps users build better habits, m
 - Google Gemini API
 
 ---
+
+## 🧠 AI Capabilities
+
+The application integrates Google's Gemini AI model to:
+
+- Analyze user habits
+- Suggest productivity improvements
+- Generate personalized recommendations
+- Answer habit-related questions
+- Help users build consistency
+
+---
+
+## 👩‍💻 Author
+
+**Ekta Mishra**
