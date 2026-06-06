@@ -11,7 +11,7 @@ import { notFound, errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
 
-const allowedOrigins = (process.env.CLIENT_URI || "")
+/* const allowedOrigins = (process.env.CLIENT_URI || "")
 .split(",")
 .map((s)=>s.trim())
 .filter(Boolean)
@@ -29,9 +29,32 @@ const corsOptions = {
   methods:["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders:["Content-Type", "Authorization"],
 };
+ */
+//app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://ai-habit-tracker-67qcdkpne-ekta-mishras-projects.vercel.app"
+    ],
+    credentials: true,
+    methods: [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE",
+      "OPTIONS"
+    ],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization"
+    ]
+  })
+);
 
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
+app.options("*", cors());
+
+//app.options("*", cors(corsOptions));
 app.use(express.json({limit:"1mb"}));
 
 app.get("/api/health", (req,res)=>{
