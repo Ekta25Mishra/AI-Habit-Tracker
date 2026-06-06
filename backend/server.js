@@ -22,7 +22,7 @@ const corsOptions = {
     if(/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
       return cb(null, true);
     }
-    if(allowedOrigins.includes(origin)) return cb(ull, true);
+    if(allowedOrigins.includes(origin)) return cb(null, true);
     return cb(new Error(`Origin ${origin} not allowed by CORS`));
   },
   credentials:true,
