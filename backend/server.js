@@ -1,81 +1,147 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import {connectDB} from "./config/db.js";
-import authRoutes from "./routes/auth.js"
-import habitRoutes from "./routes/habits.js"
+
+import { connectDB } from "./config/db.js";
+
+import authRoutes from "./routes/auth.js";
+import habitRoutes from "./routes/habits.js";
 import logRoutes from "./routes/logs.js";
 import aiRoutes from "./routes/ai.js";
 
 import { notFound, errorHandler } from "./middleware/errorHandler.js";
 
+
 const app = express();
 
-/* const allowedOrigins = (process.env.CLIENT_URI || "")
-.split(",")
-.map((s)=>s.trim())
-.filter(Boolean)
+
+// ===============================
+// CORS CONFIGURATION
+// ===============================
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://ai-habit-tracker-ten.vercel.app"
+];
+
 
 const corsOptions = {
-  origin(origin, cb){
-    if(!origin) return cb(null, true);
-    if(/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
-      return cb(null, true);
+  origin: (origin, callback) => {
+
+    // allow requests without origin
+    // (Postman, mobile apps, server calls)
+    if (!origin) {
+      return callback(null, true);
     }
-    if(allowedOrigins.includes(origin)) return cb(null, true);
-    return cb(new Error(`Origin ${origin} not allowed by CORS`));
+
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+
+    console.log("Blocked by CORS:", origin);
+
+    return callback(null, false);
   },
-  credentials:true,
-  methods:["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders:["Content-Type", "Authorization"],
+
+
+  credentials: true,
+
+
+  methods: [
+    "GET",
+    "POST",
+    "PUT",
+    "DELETE",
+    "PATCH",
+    "OPTIONS"
+  ],
+
+
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization"
+  ],
+
+
+  optionsSuccessStatus: 200
 };
- */
-//app.use(cors(corsOptions));
+
+
+// IMPORTANT: CORS MUST COME FIRST
+app.use(cors(corsOptions));
+
+
+// Handle browser preflight requests
+app.options("*", cors(corsOptions));
+
+
+// Body parser
 app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://ai-habit-tracker-67qcdkpne-ekta-mishras-projects.vercel.app"
-    ],
-    credentials: true,
-    methods: [
-      "GET",
-      "POST",
-      "PUT",
-      "DELETE",
-      "OPTIONS"
-    ],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization"
-    ]
+  express.json({
+    limit: "1mb"
   })
 );
 
-app.options("*", cors());
 
-//app.options("*", cors(corsOptions));
-app.use(express.json({limit:"1mb"}));
 
-app.get("/api/health", (req,res)=>{
+// ===============================
+// HEALTH CHECK
+// ===============================
+
+app.get("/api/health", (req, res) => {
   res.json({
-    status:"ok",
+    status: "ok",
     time: new Date().toISOString()
-  })
-})
+  });
+});
+
+
+
+// ===============================
+// ROUTES
+// ===============================
 
 app.use("/api/auth", authRoutes);
+
 app.use("/api/habits", habitRoutes);
+
 app.use("/api/logs", logRoutes);
+
 app.use("/api/ai", aiRoutes);
 
+
+
+// ===============================
+// ERROR HANDLING
+// ===============================
+
 app.use(notFound);
+
 app.use(errorHandler);
+
+
+
+// ===============================
+// SERVER START
+// ===============================
 
 const PORT = process.env.PORT || 8000;
 
-connectDB().then(()=>{
-  app.listen(PORT, ()=>{
-    console.log(`Server is running on ${PORT}`);
+
+connectDB()
+  .then(() => {
+
+    app.listen(PORT, () => {
+      console.log(`Server is running on ${PORT}`);
+    });
+
   })
-})
+  .catch((err) => {
+
+    console.error("Database connection failed:", err);
+
+    process.exit(1);
+
+  });
