@@ -37,26 +37,6 @@ An AI-powered habit tracking application that helps users build better habits, m
 
 ---
 
-## 🛠️ Tech Stack
-
-### Frontend
-- React.js
-- Vite
-- Tailwind CSS
-- Axios
-- React Router DOM
-
-### Backend
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- JWT Authentication
-
-### AI Integration
-- Google Gemini API
-
----
 
 ## 🧠 AI Capabilities
 
@@ -69,6 +49,35 @@ The application integrates Google's Gemini AI model to:
 - Help users build consistency
 
 ---
+
+## 🚀 Live Demo
+
+Frontend:
+https://ai-habit-tracker-ten.vercel.app
+
+Backend API:
+https://ai-habit-tracker-1-piy0.onrender.com/api/health
+
+
+## 🛠️ Tech Stack
+
+Frontend:
+- React
+- Vite
+- Axios
+- Tailwind CSS
+
+Backend:
+- Node.js
+- Express.js
+- JWT Authentication
+
+Database:
+- MongoDB Atlas
+
+Deployment:
+- Vercel (Frontend)
+- Render (Backend)
 
 ## 👩‍💻 Author
 
